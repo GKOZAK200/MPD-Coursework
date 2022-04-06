@@ -33,9 +33,13 @@ public class DetailActivity extends AppCompatActivity
     private void getSelectedPlannedRoadwork()
     {
         Intent previousIntent = getIntent();
-        int position = previousIntent.getIntExtra("position", 0);
-        System.out.println(position);
-        selectedPlannedRoadwork = MainActivity.PlannedRoadworksArrayList.get(position);
+        String link = previousIntent.getStringExtra("link");
+
+        for(PlannedRoadwork plannedRoadwork : MainActivity.PlannedRoadworksArrayList){
+            if(plannedRoadwork.getLink().equals(link)){
+                selectedPlannedRoadwork = plannedRoadwork;
+            }
+        }
     }
 
     private void setValues()

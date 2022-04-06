@@ -1,6 +1,7 @@
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,19 @@ public class PlannedRoadworkAdapter extends ArrayAdapter<PlannedRoadwork>
         titleView.setText(plannedRoadwork.getTitle());
         startDateView.setText("From: "+plannedRoadwork.getStartDate());
         endDateView.setText("To: "+plannedRoadwork.getEndDate());
+
+        if (plannedRoadwork.getDays()<5){
+            convertView.setBackgroundColor(Color.parseColor("#caffbf"));
+        }
+        else if (plannedRoadwork.getDays()<10){
+            convertView.setBackgroundColor(Color.parseColor("#fdffb6"));
+        }
+        else if (plannedRoadwork.getDays()<15){
+            convertView.setBackgroundColor(Color.parseColor("#ffd6a5"));
+        }
+        else{
+            convertView.setBackgroundColor(Color.parseColor("#ffadad"));
+        }
 
 
         return convertView;

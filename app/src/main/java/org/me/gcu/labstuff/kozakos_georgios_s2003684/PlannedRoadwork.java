@@ -1,5 +1,13 @@
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,6 +118,26 @@ public class PlannedRoadwork {
         String coords = this.coords;
         String[] bothCoords = coords.split(" ");
         return bothCoords;
+    }
+
+    public long getDays() {
+        SimpleDateFormat sdf=new SimpleDateFormat("dd MMMM yyyy");
+        String date1 = this.getStartDate();
+        String date2 = this.getEndDate();
+        Date date1date = null;
+        try {
+            date1date = sdf.parse(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date date2date = null;
+        try {
+            date2date = sdf.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long daysBetween = date2date.getTime() - date1date.getTime();
+        return TimeUnit.DAYS.convert(daysBetween, TimeUnit.MILLISECONDS);
     }
 
     @Override

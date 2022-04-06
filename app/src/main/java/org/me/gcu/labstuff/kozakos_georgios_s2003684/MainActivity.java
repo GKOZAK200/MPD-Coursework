@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -27,6 +28,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private String url1="";
     private String urlSourcePlannedRoadworks="https://trafficscotland.org/rss/feeds/plannedroadworks.aspx"; // Planned Roadworks Link
     public static ArrayList<PlannedRoadwork> PlannedRoadworksArrayList = null;
+    private String currentSearchText = "";
+    private SearchView searchView;
 
 
     @Override
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             }
         });
         new BackgroundProcess().execute();
+        initSearchView();
     }
 
     public InputStream getInputStream(URL url)
@@ -173,6 +178,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     PlannedRoadworksArrayList.get(i).getStartTime();
                     PlannedRoadworksArrayList.get(i).getEndDate();
                     PlannedRoadworksArrayList.get(i).getEndTime();
+                    PlannedRoadworksArrayList.get(i).getDays();
+
+
                 }
 
                 PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0 , PlannedRoadworksArrayList);
@@ -190,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 PlannedRoadwork selectedPlannedRoadwork = (PlannedRoadwork) (plannedRoadworksList.getItemAtPosition(position));
                 Intent showDetails = new Intent(getApplicationContext(), DetailActivity.class);
-                showDetails.putExtra("position", position);
+                showDetails.putExtra("link", selectedPlannedRoadwork.getLink());
                 startActivity(showDetails);
             }
         });
@@ -276,7 +284,38 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             });
         }
 
+
+        }
+
+    private void initSearchView()
+    {
+        searchView = (SearchView) findViewById(R.id.plannedRoadworkSearchView);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                currentSearchText = s;
+                ArrayList<PlannedRoadwork> filteredPlannedRoadworks = new ArrayList<PlannedRoadwork>();
+
+                for(PlannedRoadwork plannedRoadwork: PlannedRoadworksArrayList)
+                {
+                    if(plannedRoadwork.getTitle().toLowerCase().contains(s.toLowerCase()))
+                    {
+                            filteredPlannedRoadworks.add(plannedRoadwork);
+                    }
+                }
+                PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);
+                plannedRoadworksList.setAdapter(adapter);
+
+                return false;
+            }
+        });
     }
-
-
 }

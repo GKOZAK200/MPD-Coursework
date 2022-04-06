@@ -1,10 +1,12 @@
 
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:scrollbarStyle="insideOverlay">
+    android:scrollbarStyle="insideOverlay"
+    tools:context=".MainActivity">
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -27,18 +29,27 @@
             android:textAlignment="center"
             android:textSize="12sp" />
 
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/plannedRoadworkSearchView"
+            android:iconifiedByDefault="false"
+            android:queryHint="Road"/>
+
         <ListView
             android:id="@+id/plannedRoadworksList"
             android:layout_width="fill_parent"
-            android:layout_height="653dp"
+            android:layout_height="486dp"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:scrollingCache="true"
-            android:smoothScrollbar="true" />
+            android:smoothScrollbar="true" >
+
+        </ListView>
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
