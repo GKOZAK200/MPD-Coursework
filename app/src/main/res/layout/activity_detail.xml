@@ -15,12 +15,17 @@
         android:textSize="20dp"
         android:background="#e6ecf5"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/mapView"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/descriptionView"
         android:text="Description: goes here Description goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes here"
-        android:layout_marginLeft="10dp"
+        android:paddingLeft="10dp"
         android:textSize="15dp"/>
 
     <TextView
@@ -29,7 +34,7 @@
         android:id="@+id/pubDateView"
         android:text="Publish date: here"
         android:textStyle="italic"
-        android:layout_marginLeft="10dp"
+        android:paddingLeft="10dp"
         android:textSize="12dp"/>
 
 

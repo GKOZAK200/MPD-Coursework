@@ -1,6 +1,5 @@
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,6 +104,12 @@ public class PlannedRoadwork {
             return matcher.group(3);
         }
         else return "N/A";
+    }
+
+    public String[] getCoordsArray(){
+        String coords = this.coords;
+        String[] bothCoords = coords.split(" ");
+        return bothCoords;
     }
 
     @Override

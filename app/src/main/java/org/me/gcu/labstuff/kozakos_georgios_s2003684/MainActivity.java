@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                                     if (insideItem) {
                                         plannedRoadwork.setLink(xpp.nextText());
                                     }
-                                } else if (xpp.getName().equalsIgnoreCase("point")) {
+                                } else if (xpp.getName().equalsIgnoreCase("georss:point")) {
                                     if (insideItem) {
                                         plannedRoadwork.setCoords(xpp.nextText());
                                     }
