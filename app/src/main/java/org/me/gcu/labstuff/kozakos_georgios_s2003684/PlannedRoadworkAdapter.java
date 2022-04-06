@@ -31,9 +31,13 @@ public class PlannedRoadworkAdapter extends ArrayAdapter<PlannedRoadwork>
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.cell, parent, false);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.titleName);
+        TextView titleView = (TextView) convertView.findViewById(R.id.titleName);
+        TextView startDateView = (TextView) convertView.findViewById(R.id.startDateView);
+        TextView endDateView = (TextView) convertView.findViewById(R.id.endDateView);
 
-        tv.setText(plannedRoadwork.getTitle());
+        titleView.setText(plannedRoadwork.getTitle());
+        startDateView.setText("From: "+plannedRoadwork.getStartDate());
+        endDateView.setText("To: "+plannedRoadwork.getEndDate());
 
 
         return convertView;

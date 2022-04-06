@@ -67,40 +67,44 @@ public class PlannedRoadwork {
         this.pubDate = pubDate;
     }
 
-    public void getStartDate(){
+    public String getStartDate(){
         Pattern pattern = Pattern.compile(", (.*?) - ");
         Matcher matcher = pattern.matcher(this.description);
         if (matcher.find())
         {
-            System.out.println(matcher.group(1));
+            return matcher.group(1);
         }
+        else return "N/A";
     }
 
-    public void getStartTime(){
+    public String getStartTime(){
         Pattern pattern = Pattern.compile(" - (.*?)<br />");
         Matcher matcher = pattern.matcher(this.description);
         if (matcher.find())
         {
-            System.out.println(matcher.group(1));
+            return matcher.group(1);
         }
+        else return "N/A";
     }
 
-    public void getEndDate(){
+    public String getEndDate(){
         Pattern pattern = Pattern.compile("End Date: (.*?), (.*?) -");
         Matcher matcher = pattern.matcher(this.description);
         if (matcher.find())
         {
-            System.out.println(matcher.group(2));
+            return matcher.group(2);
         }
+        else return "N/A";
     }
 
-    public void getEndTime(){
+    public String getEndTime(){
         Pattern pattern = Pattern.compile("End Date: (.*?), (.*?) - (.*?)<br />");
         Matcher matcher = pattern.matcher(this.description);
         if (matcher.find())
         {
-            System.out.println(matcher.group(3));
+            return matcher.group(3);
         }
+        else return "N/A";
     }
 
     @Override
