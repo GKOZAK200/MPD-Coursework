@@ -1,18 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c8cddb">
+>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
         android:id="@+id/titleName"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:paddingLeft="20dp"
         android:gravity="center_vertical"
         android:text="Title"
         android:textSize="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:background="#e6ecf5"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descriptionView"
+        android:text="Description: goes here Description goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes here"
+        android:layout_marginLeft="10dp"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pubDateView"
+        android:text="Publish date: here"
+        android:textStyle="italic"
+        android:layout_marginLeft="10dp"
+        android:textSize="12dp"/>
 
 
-</RelativeLayout>
+
+
+</LinearLayout>

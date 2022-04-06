@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity
@@ -24,14 +23,23 @@ public class DetailActivity extends AppCompatActivity
     private void getSelectedPlannedRoadwork()
     {
         Intent previousIntent = getIntent();
-        String parsedStringLink = previousIntent.getStringExtra("link");
-        //selectedPlannedRoadwork = MainActivity.PlannedRoadworksArrayList.get(parsedStringLink);
+        int position = previousIntent.getIntExtra("position", 0);
+        System.out.println(position);
+        selectedPlannedRoadwork = MainActivity.PlannedRoadworksArrayList.get(position);
     }
 
     private void setValues()
     {
-        TextView tv = (TextView) findViewById(R.id.titleName);
+        TextView title = (TextView) findViewById(R.id.titleName);
+        TextView description = (TextView) findViewById(R.id.descriptionView);
+        TextView pubDate = (TextView) findViewById(R.id.pubDateView);
 
-        //tv.setText(PlannedRoadwork.getTitle());
+        title.setText(selectedPlannedRoadwork.getTitle());
+
+        String DescriptionText =  selectedPlannedRoadwork.getDescription();
+        DescriptionText = DescriptionText.replace("<br />", "\n");
+        description.setText(DescriptionText);
+
+        pubDate.setText("Publish date: "+selectedPlannedRoadwork.getPubDate());
     }
 }

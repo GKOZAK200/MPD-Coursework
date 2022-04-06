@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 plannedRoadworksList.setAdapter(adapter);
 
                 progressDialog.dismiss(); // Gets rid of fetching data message
+                setUpOnclickListener();
             }
         }
 
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 PlannedRoadwork selectedPlannedRoadwork = (PlannedRoadwork) (plannedRoadworksList.getItemAtPosition(position));
                 Intent showDetails = new Intent(getApplicationContext(), DetailActivity.class);
-                //showDetails.putExtra("id", selectedPlannedRoadwork.get());
+                showDetails.putExtra("position", position);
                 startActivity(showDetails);
             }
         });
