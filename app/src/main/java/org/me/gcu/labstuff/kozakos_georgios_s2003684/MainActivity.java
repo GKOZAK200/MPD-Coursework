@@ -29,7 +29,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
 {
@@ -179,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     PlannedRoadworksArrayList.get(i).getEndDate();
                     PlannedRoadworksArrayList.get(i).getEndTime();
                     PlannedRoadworksArrayList.get(i).getDays();
+                    PlannedRoadworksArrayList.get(i).getDates();
 
 
                 }
@@ -309,6 +313,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     if(plannedRoadwork.getTitle().toLowerCase().contains(s.toLowerCase()))
                     {
                             filteredPlannedRoadworks.add(plannedRoadwork);
+                    }
+
+                    List<Date> dates = plannedRoadwork.getDates();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                    for(int i=0;i<dates.size();i++) {
+                        Date lDate = (Date) dates.get(i);
+                        String ds = sdf.format(lDate);
+                        if (ds.toLowerCase().startsWith(s.toLowerCase())) {
+                            filteredPlannedRoadworks.add(plannedRoadwork);
+                        }
                     }
                 }
                 PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);

@@ -13,13 +13,13 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/salutation"
+
+        <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to Mobile Platform Development Assignment 2021-2022"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:id="@+id/plannedRoadworkSearchView"
+            android:iconifiedByDefault="false"
+            android:queryHint="Road or Date (dd month yyyy)"/>
 
         <TextView
             android:id="@+id/acknowledgement"
@@ -28,13 +28,6 @@
             android:text="Contains Traffic Scotland Data"
             android:textAlignment="center"
             android:textSize="12sp" />
-
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/plannedRoadworkSearchView"
-            android:iconifiedByDefault="false"
-            android:queryHint="Road"/>
 
         <ListView
             android:id="@+id/plannedRoadworksList"
