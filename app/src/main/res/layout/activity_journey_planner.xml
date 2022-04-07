@@ -6,21 +6,13 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
-    tools:context=".MainActivity">
+    tools:context=".JourneyPlannerActivity">
 
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
-
-
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/plannedRoadworkSearchView"
-            android:iconifiedByDefault="false"
-            android:queryHint="Road or Date (dd month yyyy)"/>
 
         <TextView
             android:id="@+id/acknowledgement"
@@ -30,17 +22,62 @@
             android:textAlignment="center"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/fromText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="From"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/departureCitySearchView"
+            android:iconifiedByDefault="false"
+            android:queryHint="Departure (city)"/>
+
+        <TextView
+            android:id="@+id/toText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="To"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/destinationSearchView"
+            android:iconifiedByDefault="false"
+            android:queryHint="Destination (city)"/>
+
+        <TextView
+            android:id="@+id/whenText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="When"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateSearchView"
+            android:iconifiedByDefault="false"
+            android:queryHint="Date (dd month yyyy)"/>
+
         <ListView
-            android:id="@+id/plannedRoadworksList"
+            android:id="@+id/journeyPlannerList"
             android:layout_width="fill_parent"
-            android:layout_height="486dp"
+            android:layout_height="421dp"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:scrollingCache="true"
-            android:smoothScrollbar="true" >
+            android:smoothScrollbar="true">
 
         </ListView>
 

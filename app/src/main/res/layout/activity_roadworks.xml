@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
-    tools:context=".MainActivity">
+    tools:context=".RoadworksActivity">
 
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/plannedRoadworkSearchView"
+            android:id="@+id/roadworkSearchView"
             android:iconifiedByDefault="false"
             android:queryHint="Road or Date (dd month yyyy)"/>
 
@@ -31,7 +31,7 @@
             android:textSize="12sp" />
 
         <ListView
-            android:id="@+id/plannedRoadworksList"
+            android:id="@+id/roadworksList"
             android:layout_width="fill_parent"
             android:layout_height="486dp"
             android:layout_weight="1"
