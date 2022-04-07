@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapFragment extends Fragment {
+public class RoadworkMapFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,8 +31,8 @@ public class MapFragment extends Fragment {
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 GoogleMap mMap = googleMap;
 
-                LatLng place = new LatLng(DetailActivity.getLatitude(), DetailActivity.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(place).title(String.valueOf(DetailActivity.getLatitude()) + " " + String.valueOf(DetailActivity.getLongitude())));
+                LatLng place = new LatLng(DetailRoadworkActivity.getLatitude(), DetailRoadworkActivity.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(place).title(String.valueOf(DetailRoadworkActivity.getLatitude()) + " " + String.valueOf(DetailRoadworkActivity.getLongitude())));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15f));
             }
         });

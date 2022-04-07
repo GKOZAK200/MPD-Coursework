@@ -352,18 +352,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                     List<Date> dates = plannedRoadwork.getDates();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-                    for(int i=0;i<dates.size();i++) {
+                   for(int i=0;i<dates.size();i++ ) {
                         Date lDate = (Date) dates.get(i);
                         String ds = sdf.format(lDate);
                         if (ds.toLowerCase().startsWith(s.toLowerCase())) {
-                            filteredPlannedRoadworks.add(plannedRoadwork);
+                            if (!filteredPlannedRoadworks.contains(plannedRoadwork)) {
+                                filteredPlannedRoadworks.add(plannedRoadwork);
+                            }
                         }
                     }
-                }
-                PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);
-                plannedRoadworksList.setAdapter(adapter);
 
+                }
+                    PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);
+                    plannedRoadworksList.setAdapter(adapter);
                 return false;
+
             }
         });
     }
