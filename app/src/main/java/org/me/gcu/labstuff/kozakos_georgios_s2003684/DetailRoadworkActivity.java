@@ -35,7 +35,7 @@ public class DetailRoadworkActivity extends AppCompatActivity
         Intent previousIntent = getIntent();
         String link = previousIntent.getStringExtra("link");
 
-        for(Roadwork roadwork : RoadworksActivity.RoadworksArrayList){
+        for(Roadwork roadwork : JourneyPlannerActivity.RoadworksArrayList){
             if(roadwork.getLink().equals(link)){
                 selectedRoadwork = roadwork;
             }

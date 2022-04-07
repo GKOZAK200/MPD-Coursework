@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/currentIncidentSearchView"
             android:iconifiedByDefault="false"
-            android:queryHint="Road or Date (dd month yyyy)"/>
+            android:queryHint="Road"/>
 
         <TextView
             android:id="@+id/acknowledgement"
