@@ -12,9 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kozakos_Georgios_S2003684"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".JourneyPlannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CurrentIncidentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RoadworksActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB7j6iN298VcfrHJMYhQ3lXE6Z6EipfVBA"/>
+            android:value="AIzaSyB7j6iN298VcfrHJMYhQ3lXE6Z6EipfVBA" />
+
         <activity
             android:name=".DetailActivity"
             android:exported="false" />

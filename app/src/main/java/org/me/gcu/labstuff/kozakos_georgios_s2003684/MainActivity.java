@@ -1,5 +1,6 @@
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     public static ArrayList<PlannedRoadwork> PlannedRoadworksArrayList = null;
     private String currentSearchText = "";
     private SearchView searchView;
+    BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -68,6 +73,35 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         });
         new BackgroundProcess().execute();
         initSearchView();
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setSelectedItemId(R.id.plannedRoadworks);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.roadworks:
+                        startActivity(new Intent(getApplicationContext(), RoadworksActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.plannedRoadworks:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.currentIncidents:
+                        startActivity(new Intent(getApplicationContext(), CurrentIncidentsActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.journeyPlanner:
+                        startActivity(new Intent(getApplicationContext(), JourneyPlannerActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                }
+                return false;
+            }
+        });
     }
 
     public InputStream getInputStream(URL url)
@@ -204,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 Intent showDetails = new Intent(getApplicationContext(), DetailActivity.class);
                 showDetails.putExtra("link", selectedPlannedRoadwork.getLink());
                 startActivity(showDetails);
+                searchView.clearFocus();
             }
         });
     }
