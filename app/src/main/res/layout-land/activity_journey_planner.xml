@@ -1,0 +1,111 @@
+
+<!--  MPD XML Starter code Semester B Session 2020 2021  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbarStyle="insideOverlay"
+    tools:context=".JourneyPlannerActivity"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/acknowledgement"
+            android:layout_width="282dp"
+            android:layout_height="46dp"
+            android:layout_below="@+id/dateSearchView"
+            android:layout_marginTop="3dp"
+            android:text="Contains Traffic Scotland Data"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <ListView
+            android:id="@+id/journeyPlannerList"
+            android:layout_width="440dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_toEndOf="@+id/departureCitySearchView"
+            android:layout_toRightOf="@id/destinationSearchView"
+            android:layout_weight="1"
+            android:nestedScrollingEnabled="true"
+            android:scrollbarSize="3dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true">
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/fromText"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="From"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:id="@+id/departureCitySearchView"
+            android:layout_width="284dp"
+            android:layout_height="63dp"
+            android:layout_below="@+id/fromText"
+            android:iconifiedByDefault="false"
+            android:queryHint="Departure (city)" />
+
+        <TextView
+            android:id="@+id/toText"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/departureCitySearchView"
+            android:text="To"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:id="@+id/destinationSearchView"
+            android:layout_width="283dp"
+            android:layout_height="61dp"
+            android:layout_below="@+id/toText"
+            android:iconifiedByDefault="false"
+            android:queryHint="Destination (city)" />
+
+        <TextView
+            android:id="@+id/whenText"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/destinationSearchView"
+            android:text="When"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <SearchView
+            android:id="@+id/dateSearchView"
+            android:layout_width="282dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/whenText"
+            android:iconifiedByDefault="false"
+            android:queryHint="Date (dd month yyyy)" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/journeyPlannerList"
+            android:layout_gravity="bottom"
+            app:itemBackground="@color/black"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"
+            android:background="@color/black"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

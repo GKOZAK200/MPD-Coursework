@@ -1,6 +1,6 @@
 
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -10,53 +10,60 @@
     >
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
 
         <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/currentIncidentSearchView"
+            android:layout_width="273dp"
+            android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
-            android:queryHint="Road"/>
+            android:queryHint="Road"
+            android:layout_marginTop="125dp"/>
 
         <TextView
             android:id="@+id/acknowledgement"
-            android:layout_width="match_parent"
+            android:layout_width="272dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/currentIncidentSearchView"
+            android:layout_marginTop="3dp"
             android:text="Contains Traffic Scotland Data"
             android:textAlignment="center"
             android:textSize="12sp" />
 
         <ListView
             android:id="@+id/currentIncidentsList"
-            android:layout_width="fill_parent"
-            android:layout_height="486dp"
+            android:layout_width="440dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_toRightOf="@+id/currentIncidentSearchView"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:scrollingCache="true"
-            android:smoothScrollbar="true" >
+            android:smoothScrollbar="true">
 
         </ListView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottom_nav"
-            app:itemBackground="@color/black"
-            app:itemTextColor="@drawable/selector"
-            app:itemIconTint="@drawable/selector"
-            app:menu="@menu/menu"
-            app:labelVisibilityMode="labeled"
             android:background="@color/black"
-            />
+            app:itemBackground="@color/black"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"
+            android:layout_alignBottom="@+id/currentIncidentsList"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

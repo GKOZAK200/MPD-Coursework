@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <TextView
+        android:id="@+id/titleName"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:background="#e6ecf5"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="Title"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:id="@+id/mapView"
+        android:layout_width="378dp"
+        android:layout_height="329dp"
+        android:layout_below="@+id/titleName"
+        android:layout_marginTop="-2dp" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="356dp"
+        android:layout_height="243dp"
+        android:layout_below="@+id/titleName"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/mapView"
+        android:paddingLeft="10dp"
+        android:text="Description: goes here Description goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes here"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/pubDateView"
+        android:layout_width="350dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/descriptionView"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="-1dp"
+        android:layout_toEndOf="@+id/mapView"
+        android:paddingLeft="10dp"
+        android:text="Publish date: here"
+        android:textSize="12dp"
+        android:textStyle="italic" />
+
+
+</RelativeLayout>
