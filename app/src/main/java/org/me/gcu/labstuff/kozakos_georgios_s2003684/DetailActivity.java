@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+// Name: Georgios Kozakos   Matric Number: S2003684
+
 public class DetailActivity extends AppCompatActivity
 {
     private static double Latitude;

@@ -1,3 +1,5 @@
+// Name: Georgios Kozakos   Matric Number: S2003684
+
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
 import android.os.Bundle;
