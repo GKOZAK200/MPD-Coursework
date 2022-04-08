@@ -276,7 +276,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Roadwork selectedRoadwork = (Roadwork) (roadworksList.getItemAtPosition(position));
-                Intent showDetails = new Intent(getApplicationContext(), DetailRoadworkActivity.class);
+                Intent showDetails = new Intent(getApplicationContext(), DetailJourneyPlannerActivity.class);
                 showDetails.putExtra("link", selectedRoadwork.getLink());
                 startActivity(showDetails);
                 departureSearchView.clearFocus();
