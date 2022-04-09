@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
             }
         });
-        new BackgroundProcess().execute();
+        BackgroundProcessThread thread = new BackgroundProcessThread();
+        thread.start();
+        //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.plannedRoadworks);
@@ -116,6 +119,107 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 return null;
             }
         }
+
+    class BackgroundProcessThread extends Thread {
+        Exception exception = null;
+
+
+        @Override
+        public void run(){
+            PlannedRoadwork plannedRoadwork = null;
+
+            try {
+                URL url = new URL(urlSourcePlannedRoadworks);
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(false); // No support for XML namespaces
+
+                XmlPullParser xpp = factory.newPullParser();
+
+                xpp.setInput(getInputStream(url), "UTF_8");
+
+                boolean insideItem = false; // To detect whether in an item or not
+
+                int eventType = xpp.getEventType();
+
+                while (eventType != XmlPullParser.END_DOCUMENT){ // Loop until end of document
+                    if (eventType == XmlPullParser.START_TAG){ // If a start tag is detected
+                        if (xpp.getName().equalsIgnoreCase("item")){ // If the start tag is for an item
+                            insideItem = true; // Inside item
+                            plannedRoadwork = new PlannedRoadwork();
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("title")) { // If the start tag is for a title
+                            if (insideItem) { // If we are inside an item
+                                plannedRoadwork.setTitle(xpp.nextText());
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("description")) {
+                            if (insideItem) {
+                                plannedRoadwork.setDescription(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("link")) {
+                            if (insideItem) {
+                                plannedRoadwork.setLink(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("georss:point")) {
+                            if (insideItem) {
+                                plannedRoadwork.setCoords(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if (insideItem) {
+                                plannedRoadwork.setPubDate(xpp.nextText());
+                            }
+                        }
+                    }
+
+                    else if (eventType == XmlPullParser.END_TAG) {
+                        if (xpp.getName().equalsIgnoreCase("item")) {
+                            insideItem = false;
+                            PlannedRoadworksArrayList.add(plannedRoadwork);
+                            Log.e("MyTag", "Planned Roadwork is " + plannedRoadwork.toString());
+                        }
+                    }
+                    eventType = xpp.next(); // Go to next event
+                }
+            }
+
+
+            catch (MalformedURLException e){
+                exception = e;
+            }
+            catch (XmlPullParserException e){
+                exception = e;
+            }
+            catch (IOException e){
+                exception = e;
+            }
+            runOnUiThread(new Runnable(){
+                public void run() {
+                    ArrayList<String> titles = new ArrayList<String>();
+                    ArrayList<String> descriptions = new ArrayList<String>();
+                    for (int i=0; i < PlannedRoadworksArrayList.size(); i++){
+                        titles.add(PlannedRoadworksArrayList.get(i).getTitle());
+                        descriptions.add(PlannedRoadworksArrayList.get(i).getDescription());
+                        PlannedRoadworksArrayList.get(i).getStartDate();
+                        PlannedRoadworksArrayList.get(i).getStartTime();
+                        PlannedRoadworksArrayList.get(i).getEndDate();
+                        PlannedRoadworksArrayList.get(i).getEndTime();
+                        PlannedRoadworksArrayList.get(i).getDays();
+                        PlannedRoadworksArrayList.get(i).getDates();
+
+
+                    }
+
+                    PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0 , PlannedRoadworksArrayList);
+
+                    plannedRoadworksList.setAdapter(adapter);
+
+                    setUpOnclickListener();
+                }
+            });
+        }
+    }
 
         public class BackgroundProcess extends AsyncTask<Integer, Integer, Exception> {
             ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
@@ -342,34 +446,52 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             @Override
             public boolean onQueryTextChange(String s)
             {
-                currentSearchText = s;
-                ArrayList<PlannedRoadwork> filteredPlannedRoadworks = new ArrayList<PlannedRoadwork>();
-
-                for(PlannedRoadwork plannedRoadwork: PlannedRoadworksArrayList)
-                {
-                    if(plannedRoadwork.getTitle().toLowerCase().contains(s.toLowerCase()))
-                    {
-                            filteredPlannedRoadworks.add(plannedRoadwork);
-                    }
-
-                    List<Date> dates = plannedRoadwork.getDates();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-                   for(int i=0;i<dates.size();i++ ) {
-                        Date lDate = (Date) dates.get(i);
-                        String ds = sdf.format(lDate);
-                        if (ds.toLowerCase().startsWith(s.toLowerCase())) {
-                            if (!filteredPlannedRoadworks.contains(plannedRoadwork)) {
-                                filteredPlannedRoadworks.add(plannedRoadwork);
-                            }
-                        }
-                    }
-
-                }
-                    PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);
-                    plannedRoadworksList.setAdapter(adapter);
+                searchThread thread = new searchThread(s);
+                thread.start();
                 return false;
-
             }
         });
+    }
+    class searchThread extends Thread{
+        String s;
+
+        searchThread(String s) {
+            this.s = s;
+        }
+
+        @Override
+        public void run(){
+            currentSearchText = s;
+            ArrayList<PlannedRoadwork> filteredPlannedRoadworks = new ArrayList<PlannedRoadwork>();
+
+            for(PlannedRoadwork plannedRoadwork: PlannedRoadworksArrayList)
+            {
+                if(plannedRoadwork.getTitle().toLowerCase().contains(s.toLowerCase()))
+                {
+                    filteredPlannedRoadworks.add(plannedRoadwork);
+                }
+
+                List<Date> dates = plannedRoadwork.getDates();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                for(int i=0;i<dates.size();i++ ) {
+                    Date lDate = (Date) dates.get(i);
+                    String ds = sdf.format(lDate);
+                    if (ds.toLowerCase().startsWith(s.toLowerCase())) {
+                        if (!filteredPlannedRoadworks.contains(plannedRoadwork)) {
+                            filteredPlannedRoadworks.add(plannedRoadwork);
+                        }
+                    }
+                }
+
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    PlannedRoadworkAdapter adapter = new PlannedRoadworkAdapter(getApplicationContext(), 0, filteredPlannedRoadworks);
+                    plannedRoadworksList.setAdapter(adapter);
+                }
+            });
+
+        }
     }
 }

@@ -73,7 +73,9 @@ public class CurrentIncidentsActivity extends AppCompatActivity implements OnCli
 
             }
         });
-        new BackgroundProcess().execute();
+        BackgroundProcessThread thread = new BackgroundProcessThread();
+        thread.start();
+        //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.currentIncidents);
@@ -114,6 +116,99 @@ public class CurrentIncidentsActivity extends AppCompatActivity implements OnCli
         }
         catch (IOException e){
             return null;
+        }
+    }
+
+    class BackgroundProcessThread extends Thread {
+        Exception exception = null;
+
+        @Override
+        public void run(){
+            CurrentIncident currentIncident = null;
+
+            try {
+                URL url = new URL(urlSourceCurrentIncidents);
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(false); // No support for XML namespaces
+
+                XmlPullParser xpp = factory.newPullParser();
+
+                xpp.setInput(getInputStream(url), "UTF_8");
+
+                boolean insideItem = false; // To detect whether in an item or not
+
+                int eventType = xpp.getEventType();
+
+                while (eventType != XmlPullParser.END_DOCUMENT){ // Loop until end of document
+                    if (eventType == XmlPullParser.START_TAG){ // If a start tag is detected
+                        if (xpp.getName().equalsIgnoreCase("item")){ // If the start tag is for an item
+                            insideItem = true; // Inside item
+                            currentIncident = new CurrentIncident();
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("title")) { // If the start tag is for a title
+                            if (insideItem) { // If we are inside an item
+                                currentIncident.setTitle(xpp.nextText());
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("description")) {
+                            if (insideItem) {
+                                currentIncident.setDescription(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("link")) {
+                            if (insideItem) {
+                                currentIncident.setLink(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("georss:point")) {
+                            if (insideItem) {
+                                currentIncident.setCoords(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if (insideItem) {
+                                currentIncident.setPubDate(xpp.nextText());
+                            }
+                        }
+                    }
+
+                    else if (eventType == XmlPullParser.END_TAG) {
+                        if (xpp.getName().equalsIgnoreCase("item")) {
+                            insideItem = false;
+                            CurrentIncidentsArrayList.add(currentIncident);
+                            Log.e("MyTag", "Current Incident is " + currentIncident.toString());
+                        }
+                    }
+                    eventType = xpp.next(); // Go to next event
+                }
+            }
+
+
+            catch (MalformedURLException e){
+                exception = e;
+            }
+            catch (XmlPullParserException e){
+                exception = e;
+            }
+            catch (IOException e){
+                exception = e;
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> titles = new ArrayList<String>();
+                    ArrayList<String> descriptions = new ArrayList<String>();
+                    for (int i=0; i < CurrentIncidentsArrayList.size(); i++){
+                        titles.add(CurrentIncidentsArrayList.get(i).getTitle());
+                        descriptions.add(CurrentIncidentsArrayList.get(i).getDescription());
+                    }
+
+                    CurrentIncidentAdapter adapter = new CurrentIncidentAdapter(getApplicationContext(), 0 , CurrentIncidentsArrayList);
+
+                    currentIncidentsList.setAdapter(adapter);
+
+                    setUpOnclickListener();
+                }
+            });
         }
     }
 
@@ -332,23 +427,42 @@ public class CurrentIncidentsActivity extends AppCompatActivity implements OnCli
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
-                currentSearchText = s;
-                ArrayList<CurrentIncident> filteredCurrentIncidents = new ArrayList<CurrentIncident>();
-
-                for(CurrentIncident currentIncident: CurrentIncidentsArrayList)
-                {
-                    if(currentIncident.getTitle().toLowerCase().contains(s.toLowerCase()))
-                    {
-                        filteredCurrentIncidents.add(currentIncident);
-                    }
-                }
-                CurrentIncidentAdapter adapter = new CurrentIncidentAdapter(getApplicationContext(), 0, filteredCurrentIncidents);
-                currentIncidentsList.setAdapter(adapter);
+            public boolean onQueryTextChange(String s){
+                searchThread thread = new searchThread(s);
+                thread.start();
                 return false;
 
             }
         });
     }
+
+    class searchThread extends Thread{
+        String s;
+
+        searchThread(String s){
+            this.s = s;
+        }
+
+        @Override
+        public void run(){
+            currentSearchText = s;
+            ArrayList<CurrentIncident> filteredCurrentIncidents = new ArrayList<CurrentIncident>();
+
+            for(CurrentIncident currentIncident: CurrentIncidentsArrayList)
+            {
+                if(currentIncident.getTitle().toLowerCase().contains(s.toLowerCase()))
+                {
+                    filteredCurrentIncidents.add(currentIncident);
+                }
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    CurrentIncidentAdapter adapter = new CurrentIncidentAdapter(getApplicationContext(), 0, filteredCurrentIncidents);
+                    currentIncidentsList.setAdapter(adapter);
+                }
+            });
+        }
+    }
 }
+

@@ -76,7 +76,9 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
             }
         });
-        new BackgroundProcess().execute();
+        BackgroundProcessThread thread = new BackgroundProcessThread();
+        thread.start();
+        //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.journeyPlanner);
@@ -114,8 +116,151 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             return url.openConnection().getInputStream(); // Opens connection to URL
         } catch (IOException e) {
 
-    }return null;
-}
+        }
+        return null;
+    }
+
+    class BackgroundProcessThread extends Thread {
+        Exception exception = null;
+
+        @Override
+        public void run() {
+            Roadwork roadwork = null;
+
+            try {
+                URL url = new URL(urlSourceRoadworks);
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(false); // No support for XML namespaces
+
+                XmlPullParser xpp = factory.newPullParser();
+
+                xpp.setInput(getInputStream(url), "UTF_8");
+
+                boolean insideItem = false; // To detect whether in an item or not
+
+                int eventType = xpp.getEventType();
+
+                while (eventType != XmlPullParser.END_DOCUMENT) { // Loop until end of document
+                    if (eventType == XmlPullParser.START_TAG) { // If a start tag is detected
+                        if (xpp.getName().equalsIgnoreCase("item")) { // If the start tag is for an item
+                            insideItem = true; // Inside item
+                            roadwork = new Roadwork();
+                        } else if (xpp.getName().equalsIgnoreCase("title")) { // If the start tag is for a title
+                            if (insideItem) { // If we are inside an item
+                                roadwork.setTitle(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("description")) {
+                            if (insideItem) {
+                                roadwork.setDescription(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("link")) {
+                            if (insideItem) {
+                                roadwork.setLink(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("georss:point")) {
+                            if (insideItem) {
+                                roadwork.setCoords(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if (insideItem) {
+                                roadwork.setPubDate(xpp.nextText());
+                            }
+                        }
+                    } else if (eventType == XmlPullParser.END_TAG) {
+                        if (xpp.getName().equalsIgnoreCase("item")) {
+                            insideItem = false;
+                            RoadworksArrayList.add(roadwork);
+                            Log.e("MyTag", "Roadwork is " + roadwork.toString());
+                        }
+                    }
+                    eventType = xpp.next(); // Go to next event
+                }
+
+                url = new URL(urlSourcePlannedRoadworks);
+
+                factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(false); // No support for XML namespaces
+
+                xpp = factory.newPullParser();
+
+                xpp.setInput(getInputStream(url), "UTF_8");
+
+                insideItem = false; // To detect whether in an item or not
+
+                eventType = xpp.getEventType();
+
+                while (eventType != XmlPullParser.END_DOCUMENT) { // Loop until end of document
+                    if (eventType == XmlPullParser.START_TAG) { // If a start tag is detected
+                        if (xpp.getName().equalsIgnoreCase("item")) { // If the start tag is for an item
+                            insideItem = true; // Inside item
+                            roadwork = new Roadwork();
+                        } else if (xpp.getName().equalsIgnoreCase("title")) { // If the start tag is for a title
+                            if (insideItem) { // If we are inside an item
+                                roadwork.setTitle(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("description")) {
+                            if (insideItem) {
+                                roadwork.setDescription(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("link")) {
+                            if (insideItem) {
+                                roadwork.setLink(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("georss:point")) {
+                            if (insideItem) {
+                                roadwork.setCoords(xpp.nextText());
+                            }
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if (insideItem) {
+                                roadwork.setPubDate(xpp.nextText());
+                            }
+                        }
+                    } else if (eventType == XmlPullParser.END_TAG) {
+                        if (xpp.getName().equalsIgnoreCase("item")) {
+                            insideItem = false;
+                            RoadworksArrayList.add(roadwork);
+                            Log.e("MyTag", "Roadwork is " + roadwork.toString());
+                        }
+                    }
+                    eventType = xpp.next(); // Go to next event
+                }
+            } catch (MalformedURLException e) {
+                exception = e;
+            } catch (XmlPullParserException e) {
+                exception = e;
+            } catch (IOException e) {
+                exception = e;
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> titles = new ArrayList<String>();
+                    ArrayList<String> descriptions = new ArrayList<String>();
+                    for (int i = 0; i < RoadworksArrayList.size(); i++) {
+                        titles.add(RoadworksArrayList.get(i).getTitle());
+                        descriptions.add(RoadworksArrayList.get(i).getDescription());
+                        RoadworksArrayList.get(i).getStartDate();
+                        RoadworksArrayList.get(i).getStartTime();
+                        RoadworksArrayList.get(i).getEndDate();
+                        RoadworksArrayList.get(i).getEndTime();
+                        RoadworksArrayList.get(i).getDays();
+                        RoadworksArrayList.get(i).getDates();
+
+
+                    }
+
+                    RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, RoadworksArrayList);
+
+                    roadworksList.setAdapter(adapter);
+
+                    setUpOnclickListener();
+                }
+            });
+        }
+    }
 
     public class BackgroundProcess extends AsyncTask<Integer, Integer, Exception> {
         ProgressDialog progressDialog = new ProgressDialog(JourneyPlannerActivity.this);
@@ -364,8 +509,8 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
     private void initSearchView() {
         departureSearchView = (SearchView) findViewById(R.id.departureCitySearchView);
-        destinationSearchView = (SearchView)  findViewById(R.id.destinationSearchView);
-        dateSearchView = (SearchView)  findViewById(R.id.dateSearchView);
+        destinationSearchView = (SearchView) findViewById(R.id.destinationSearchView);
+        dateSearchView = (SearchView) findViewById(R.id.dateSearchView);
 
 
         departureSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -375,29 +520,9 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
-                departureSearchText = s;
-                ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
-
-                for(Roadwork roadwork: RoadworksArrayList) {
-                    if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
-                        List<Date> dates = roadwork.getDates();
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-                        for (int i = 0; i < dates.size(); i++) {
-                            Date lDate = (Date) dates.get(i);
-                            String ds = sdf.format(lDate);
-                            if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
-                                if (!filteredRoadworks.contains(roadwork)) {
-                                    filteredRoadworks.add(roadwork);
-                                }
-                            }
-                        }
-                    }
-                }
-                RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
-                roadworksList.setAdapter(adapter);
-
+            public boolean onQueryTextChange(String s) {
+                departureSearchThread thread = new departureSearchThread(s);
+                thread.start();
                 return false;
             }
         });
@@ -408,29 +533,9 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
-                destinationSearchText = s;
-                ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
-
-                for(Roadwork roadwork: RoadworksArrayList) {
-                    if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
-                        List<Date> dates = roadwork.getDates();
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-                        for (int i = 0; i < dates.size(); i++) {
-                            Date lDate = (Date) dates.get(i);
-                            String ds = sdf.format(lDate);
-                            if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
-                                if (!filteredRoadworks.contains(roadwork)) {
-                                    filteredRoadworks.add(roadwork);
-                                }
-                            }
-                        }
-                    }
-                }
-                RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
-                roadworksList.setAdapter(adapter);
-
+            public boolean onQueryTextChange(String s) {
+                destinationSearchThread thread = new destinationSearchThread(s);
+                thread.start();
                 return false;
             }
         });
@@ -441,31 +546,125 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
-                dateSearchText = s;
-                ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
+            public boolean onQueryTextChange(String s) {
+                dateSearchThread thread = new dateSearchThread(s);
+                thread.start();
+                return false;
+            }
+        });
 
-                for(Roadwork roadwork: RoadworksArrayList) {
-                    if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
-                        List<Date> dates = roadwork.getDates();
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-                        for (int i = 0; i < dates.size(); i++) {
-                            Date lDate = (Date) dates.get(i);
-                            String ds = sdf.format(lDate);
-                            if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
-                                if (!filteredRoadworks.contains(roadwork)) {
-                                    filteredRoadworks.add(roadwork);
-                                }
+
+    }
+
+    class departureSearchThread extends Thread {
+        String s;
+
+        departureSearchThread(String s) {
+            this.s = s;
+        }
+
+        @Override
+        public void run() {
+            departureSearchText = s;
+            ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
+
+            for (Roadwork roadwork : RoadworksArrayList) {
+                if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
+                    List<Date> dates = roadwork.getDates();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                    for (int i = 0; i < dates.size(); i++) {
+                        Date lDate = (Date) dates.get(i);
+                        String ds = sdf.format(lDate);
+                        if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
+                            if (!filteredRoadworks.contains(roadwork)) {
+                                filteredRoadworks.add(roadwork);
                             }
                         }
                     }
                 }
-                RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
-                roadworksList.setAdapter(adapter);
-
-                return false;
             }
-        });
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
+                    roadworksList.setAdapter(adapter);
+                }
+            });
+        }
+    }
+
+    class destinationSearchThread extends Thread {
+        String s;
+
+        destinationSearchThread(String s){
+            this.s = s;
+        }
+
+        @Override
+        public void run() {
+            destinationSearchText = s;
+            ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
+
+            for (Roadwork roadwork : RoadworksArrayList) {
+                if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
+                    List<Date> dates = roadwork.getDates();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                    for (int i = 0; i < dates.size(); i++) {
+                        Date lDate = (Date) dates.get(i);
+                        String ds = sdf.format(lDate);
+                        if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
+                            if (!filteredRoadworks.contains(roadwork)) {
+                                filteredRoadworks.add(roadwork);
+                            }
+                        }
+                    }
+                }
+            }
+         runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                 RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
+                 roadworksList.setAdapter(adapter);
+             }
+         });
+        }
+    }
+
+    class dateSearchThread extends Thread {
+        String s;
+
+        dateSearchThread(String s){
+            this.s = s;
+        }
+
+        @Override
+        public void run() {
+            dateSearchText = s;
+            ArrayList<Roadwork> filteredRoadworks = new ArrayList<Roadwork>();
+
+            for (Roadwork roadwork : RoadworksArrayList) {
+                if (roadwork.getTitle().toLowerCase().contains(destinationSearchText.toLowerCase()) && roadwork.getTitle().toLowerCase().contains(departureSearchText.toLowerCase())) {
+                    List<Date> dates = roadwork.getDates();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+                    for (int i = 0; i < dates.size(); i++) {
+                        Date lDate = (Date) dates.get(i);
+                        String ds = sdf.format(lDate);
+                        if (ds.toLowerCase().contains(dateSearchText.toLowerCase())) {
+                            if (!filteredRoadworks.contains(roadwork)) {
+                                filteredRoadworks.add(roadwork);
+                            }
+                        }
+                    }
+                }
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RoadworkAdapter adapter = new RoadworkAdapter(getApplicationContext(), 0, filteredRoadworks);
+                    roadworksList.setAdapter(adapter);
+                }
+            });
+        }
     }
 }
+
