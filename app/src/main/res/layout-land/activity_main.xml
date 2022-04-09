@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/plannedRoadworkSearchView"
             android:layout_marginTop="3dp"
-            android:text="Contains Traffic Scotland Data"
+            android:text="Contains Traffic Scotland Data - S2003684"
             android:textAlignment="center"
             android:textSize="12sp" />
 

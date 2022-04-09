@@ -113,9 +113,9 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
         try {
             return url.openConnection().getInputStream(); // Opens connection to URL
         } catch (IOException e) {
-            return null;
-        }
-    }
+
+    }return null;
+}
 
     public class BackgroundProcess extends AsyncTask<Integer, Integer, Exception> {
         ProgressDialog progressDialog = new ProgressDialog(JourneyPlannerActivity.this);
