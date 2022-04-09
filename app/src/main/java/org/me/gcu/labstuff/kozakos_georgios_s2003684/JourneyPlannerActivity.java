@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -56,6 +58,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
     private SearchView destinationSearchView;
     private SearchView dateSearchView;
     BottomNavigationView bottomNavigationView;
+    private Handler mHandler = new Handler();
 
 
     @Override
@@ -76,8 +79,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
             }
         });
-        BackgroundProcessThread thread = new BackgroundProcessThread();
-        thread.start();
+        updateList.run();
         //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -89,18 +91,22 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
                 switch (item.getItemId()) {
                     case R.id.roadworks:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), RoadworksActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plannedRoadworks:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.currentIncidents:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), CurrentIncidentsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.journeyPlanner:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), JourneyPlannerActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
@@ -521,6 +527,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
             @Override
             public boolean onQueryTextChange(String s) {
+                mHandler.removeCallbacks(updateList);
                 departureSearchThread thread = new departureSearchThread(s);
                 thread.start();
                 return false;
@@ -534,6 +541,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
             @Override
             public boolean onQueryTextChange(String s) {
+                mHandler.removeCallbacks(updateList);
                 destinationSearchThread thread = new destinationSearchThread(s);
                 thread.start();
                 return false;
@@ -547,6 +555,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
 
             @Override
             public boolean onQueryTextChange(String s) {
+                mHandler.removeCallbacks(updateList);
                 dateSearchThread thread = new dateSearchThread(s);
                 thread.start();
                 return false;
@@ -666,5 +675,15 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             });
         }
     }
+    private Runnable updateList = new Runnable() {
+        @Override
+        public void run() {
+            RoadworksArrayList.removeAll(RoadworksArrayList);
+            Toast.makeText(JourneyPlannerActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
+            BackgroundProcessThread thread = new BackgroundProcessThread();
+            thread.start();
+            mHandler.postDelayed(this, 10000);
+        }
+    };
 }
 

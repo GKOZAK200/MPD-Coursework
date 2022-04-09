@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -52,6 +54,7 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
     private String currentSearchText = "";
     private SearchView searchView;
     BottomNavigationView bottomNavigationView;
+    private Handler mHandler = new Handler();
 
 
     @Override
@@ -73,8 +76,7 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
 
             }
         });
-        RoadworksActivity.BackgroundProcessThread thread = new RoadworksActivity.BackgroundProcessThread();
-        thread.start();
+        updateList.run();
         //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -445,6 +447,7 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
             @Override
             public boolean onQueryTextChange(String s)
             {
+                mHandler.removeCallbacks(updateList);
                 searchThread thread = new searchThread(s);
                 thread.start();
                 return false;
@@ -491,4 +494,15 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
             });
         }
     }
+
+    private Runnable updateList = new Runnable() {
+        @Override
+        public void run() {
+            RoadworksArrayList.removeAll(RoadworksArrayList);
+            Toast.makeText(RoadworksActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
+            RoadworksActivity.BackgroundProcessThread thread = new RoadworksActivity.BackgroundProcessThread();
+            thread.start();
+            mHandler.postDelayed(this, 10000);
+        }
+    };
 }

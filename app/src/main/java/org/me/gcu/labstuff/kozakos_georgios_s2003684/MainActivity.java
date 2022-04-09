@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private String currentSearchText = "";
     private SearchView searchView;
     BottomNavigationView bottomNavigationView;
+    private Handler mHandler = new Handler();
 
 
     @Override
@@ -74,8 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
             }
         });
-        BackgroundProcessThread thread = new BackgroundProcessThread();
-        thread.start();
+        updateList.run();
         //new BackgroundProcess().execute();
         initSearchView();
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -87,18 +88,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                 switch (item.getItemId()){
                     case R.id.roadworks:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), RoadworksActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plannedRoadworks:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.currentIncidents:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), CurrentIncidentsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.journeyPlanner:
+                        mHandler.removeCallbacks(updateList);
                         startActivity(new Intent(getApplicationContext(), JourneyPlannerActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
@@ -446,6 +451,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             @Override
             public boolean onQueryTextChange(String s)
             {
+                mHandler.removeCallbacks(updateList);
                 searchThread thread = new searchThread(s);
                 thread.start();
                 return false;
@@ -494,4 +500,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
         }
     }
+
+    private Runnable updateList = new Runnable() {
+        @Override
+        public void run() {
+            PlannedRoadworksArrayList.removeAll(PlannedRoadworksArrayList);
+            Toast.makeText(MainActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
+            BackgroundProcessThread thread = new BackgroundProcessThread();
+            thread.start();
+            mHandler.postDelayed(this, 10000);
+        }
+    };
 }
