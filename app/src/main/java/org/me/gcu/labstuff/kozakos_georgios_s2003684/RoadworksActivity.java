@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -498,11 +501,22 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
     private Runnable updateList = new Runnable() {
         @Override
         public void run() {
-            RoadworksArrayList.removeAll(RoadworksArrayList);
-            Toast.makeText(RoadworksActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
-            RoadworksActivity.BackgroundProcessThread thread = new RoadworksActivity.BackgroundProcessThread();
-            thread.start();
-            mHandler.postDelayed(this, 180000);
+            if (internetAvailable()) {
+                RoadworksArrayList.removeAll(RoadworksArrayList);
+                Toast.makeText(RoadworksActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
+                RoadworksActivity.BackgroundProcessThread thread = new RoadworksActivity.BackgroundProcessThread();
+                thread.start();
+                mHandler.postDelayed(this, 180000);
+            }
+            else{
+                Toast.makeText(RoadworksActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+            }
         }
     };
+
+    public boolean internetAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }

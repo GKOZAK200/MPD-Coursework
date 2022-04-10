@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -474,12 +477,23 @@ public class CurrentIncidentsActivity extends AppCompatActivity implements OnCli
     private Runnable updateList = new Runnable() {
         @Override
         public void run() {
-            CurrentIncidentsArrayList.removeAll(CurrentIncidentsArrayList);
-            Toast.makeText(CurrentIncidentsActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
-            BackgroundProcessThread thread = new BackgroundProcessThread();
-            thread.start();
-            mHandler.postDelayed(this, 180000);
+            if (internetAvailable()) {
+                CurrentIncidentsArrayList.removeAll(CurrentIncidentsArrayList);
+                Toast.makeText(CurrentIncidentsActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
+                BackgroundProcessThread thread = new BackgroundProcessThread();
+                thread.start();
+                mHandler.postDelayed(this, 180000);
+            }
+            else{
+                Toast.makeText(CurrentIncidentsActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+            }
         }
     };
+
+    public boolean internetAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }
 
