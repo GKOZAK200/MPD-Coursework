@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
+<?xml version="1.0" encoding="utf-8"?><!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/titleName"
@@ -14,7 +12,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:text="Title"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <FrameLayout
         android:id="@+id/mapView"
@@ -33,7 +31,7 @@
         android:layout_toEndOf="@+id/mapView"
         android:paddingLeft="10dp"
         android:text="Description: goes here Description goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes here"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/pubDateView"
@@ -45,11 +43,10 @@
         android:layout_toEndOf="@+id/mapView"
         android:paddingLeft="10dp"
         android:text="Publish date: here"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/acknowledgement"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/pubDateView"

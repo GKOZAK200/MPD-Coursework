@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
+<?xml version="1.0" encoding="utf-8"?><!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.me.gcu.labstuff.kozakos_georgios_s2003684">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"

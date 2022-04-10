@@ -1,13 +1,12 @@
 <!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
-    tools:context=".CurrentIncidentsActivity"
-    >
+    tools:context=".CurrentIncidentsActivity">
 
 
     <RelativeLayout
@@ -20,12 +19,11 @@
             android:id="@+id/currentIncidentSearchView"
             android:layout_width="273dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="125dp"
             android:iconifiedByDefault="false"
-            android:queryHint="Road"
-            android:layout_marginTop="125dp"/>
+            android:queryHint="Road" />
 
         <TextView
-            android:id="@+id/acknowledgement"
             android:layout_width="272dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/currentIncidentSearchView"
@@ -42,7 +40,6 @@
             android:layout_marginLeft="4dp"
             android:layout_marginEnd="-2dp"
             android:layout_toRightOf="@+id/currentIncidentSearchView"
-            android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
@@ -56,13 +53,13 @@
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/currentIncidentsList"
             android:background="@color/black"
             app:itemBackground="@color/black"
             app:itemIconTint="@drawable/selector"
             app:itemTextColor="@drawable/selector"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu"
-            android:layout_alignBottom="@+id/currentIncidentsList"/>
+            app:menu="@menu/menu" />
 
     </RelativeLayout>
 

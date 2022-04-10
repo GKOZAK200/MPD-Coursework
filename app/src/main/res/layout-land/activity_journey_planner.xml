@@ -1,13 +1,12 @@
 <!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
-    tools:context=".JourneyPlannerActivity"
-    >
+    tools:context=".JourneyPlannerActivity">
 
 
     <RelativeLayout
@@ -16,7 +15,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/acknowledgement"
             android:layout_width="282dp"
             android:layout_height="46dp"
             android:layout_below="@+id/dateSearchView"
@@ -32,7 +30,6 @@
             android:layout_gravity="right"
             android:layout_toEndOf="@+id/departureCitySearchView"
             android:layout_toRightOf="@id/destinationSearchView"
-            android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
@@ -99,12 +96,12 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/journeyPlannerList"
             android:layout_gravity="bottom"
+            android:background="@color/black"
             app:itemBackground="@color/black"
             app:itemIconTint="@drawable/selector"
             app:itemTextColor="@drawable/selector"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu"
-            android:background="@color/black"/>
+            app:menu="@menu/menu" />
 
     </RelativeLayout>
 

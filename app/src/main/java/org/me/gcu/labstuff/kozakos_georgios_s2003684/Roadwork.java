@@ -2,16 +2,13 @@
 
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
+import androidx.annotation.NonNull;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,14 +26,6 @@ public class Roadwork {
         this.link = "";
         this.coords = "";
         this.pubDate = "";
-    }
-
-    public Roadwork(String title, String description, String link, String coords, String pubDate) {
-        this.title = title;
-        this.description = description;
-        this.link = link;
-        this.coords = coords;
-        this.pubDate = pubDate;
     }
 
     public String getTitle() {
@@ -63,10 +52,6 @@ public class Roadwork {
         this.link = link;
     }
 
-    public String getCoords() {
-        return coords;
-    }
-
     public void setCoords(String coords) {
         this.coords = coords;
     }
@@ -79,54 +64,45 @@ public class Roadwork {
         this.pubDate = pubDate;
     }
 
-    public String getStartDate(){
+    public String getStartDate() {
         Pattern pattern = Pattern.compile(", (.*?) - ");
         Matcher matcher = pattern.matcher(this.description);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             return matcher.group(1);
-        }
-        else return "N/A";
+        } else return "N/A";
     }
 
-    public String getStartTime(){
+    public void getStartTime() {
         Pattern pattern = Pattern.compile(" - (.*?)<br />");
         Matcher matcher = pattern.matcher(this.description);
-        if (matcher.find())
-        {
-            return matcher.group(1);
+        if (matcher.find()) {
+            matcher.group(1);
         }
-        else return "N/A";
     }
 
-    public String getEndDate(){
+    public String getEndDate() {
         Pattern pattern = Pattern.compile("End Date: (.*?), (.*?) -");
         Matcher matcher = pattern.matcher(this.description);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             return matcher.group(2);
-        }
-        else return "N/A";
+        } else return "N/A";
     }
 
-    public String getEndTime(){
+    public void getEndTime() {
         Pattern pattern = Pattern.compile("End Date: (.*?), (.*?) - (.*?)<br />");
         Matcher matcher = pattern.matcher(this.description);
-        if (matcher.find())
-        {
-            return matcher.group(3);
+        if (matcher.find()) {
+            matcher.group(3);
         }
-        else return "N/A";
     }
 
-    public String[] getCoordsArray(){
+    public String[] getCoordsArray() {
         String coords = this.coords;
-        String[] bothCoords = coords.split(" ");
-        return bothCoords;
+        return coords.split(" ");
     }
 
     public long getDays() {
-        SimpleDateFormat sdf=new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
         String date1 = this.getStartDate();
         String date2 = this.getEndDate();
         Date date1date = null;
@@ -141,6 +117,8 @@ public class Roadwork {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        assert date1date != null;
+        assert date2date != null;
         long daysBetween = date2date.getTime() - date1date.getTime();
         return TimeUnit.DAYS.convert(daysBetween, TimeUnit.MILLISECONDS);
     }
@@ -161,9 +139,11 @@ public class Roadwork {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Date> dates = new ArrayList<Date>();
+        List<Date> dates = new ArrayList<>();
         long interval = 24 * 1000 * 60 * 60;
+        assert endDate != null;
         long endTime = endDate.getTime();
+        assert startDate != null;
         long curTime = startDate.getTime();
         while (curTime <= endTime) {
             dates.add(new Date(curTime));
@@ -172,6 +152,7 @@ public class Roadwork {
         return dates;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return title + "\r\n" + pubDate;

@@ -2,19 +2,7 @@
 
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import androidx.annotation.NonNull;
 
 public class CurrentIncident {
     String title;
@@ -29,14 +17,6 @@ public class CurrentIncident {
         this.link = "";
         this.coords = "";
         this.pubDate = "";
-    }
-
-    public CurrentIncident(String title, String description, String link, String coords, String pubDate) {
-        this.title = title;
-        this.description = description;
-        this.link = link;
-        this.coords = coords;
-        this.pubDate = pubDate;
     }
 
     public String getTitle() {
@@ -63,10 +43,6 @@ public class CurrentIncident {
         this.link = link;
     }
 
-    public String getCoords() {
-        return coords;
-    }
-
     public void setCoords(String coords) {
         this.coords = coords;
     }
@@ -79,12 +55,12 @@ public class CurrentIncident {
         this.pubDate = pubDate;
     }
 
-    public String[] getCoordsArray(){
+    public String[] getCoordsArray() {
         String coords = this.coords;
-        String[] bothCoords = coords.split(" ");
-        return bothCoords;
+        return coords.split(" ");
     }
 
+    @NonNull
     @Override
     public String toString() {
         return title + "\r\n" + pubDate;

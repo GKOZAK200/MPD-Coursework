@@ -1,10 +1,10 @@
 <!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
     tools:context=".JourneyPlannerActivity">
 
@@ -15,7 +15,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/acknowledgement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contains Traffic Scotland Data - S2003684"
@@ -31,11 +30,11 @@
             android:textSize="20sp" />
 
         <SearchView
+            android:id="@+id/departureCitySearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/departureCitySearchView"
             android:iconifiedByDefault="false"
-            android:queryHint="Departure (city)"/>
+            android:queryHint="Departure (city)" />
 
         <TextView
             android:id="@+id/toText"
@@ -46,11 +45,11 @@
             android:textSize="20sp" />
 
         <SearchView
+            android:id="@+id/destinationSearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/destinationSearchView"
             android:iconifiedByDefault="false"
-            android:queryHint="Destination (city)"/>
+            android:queryHint="Destination (city)" />
 
         <TextView
             android:id="@+id/whenText"
@@ -61,16 +60,16 @@
             android:textSize="20sp" />
 
         <SearchView
+            android:id="@+id/dateSearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dateSearchView"
             android:iconifiedByDefault="false"
-            android:queryHint="Date (dd month yyyy)"/>
+            android:queryHint="Date (dd month yyyy)" />
 
         <ListView
             android:id="@+id/journeyPlannerList"
             android:layout_width="fill_parent"
-            android:layout_height="421dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
@@ -82,14 +81,14 @@
         </ListView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottom_nav"
             app:itemBackground="@color/black"
-            app:itemTextColor="@drawable/selector"
             app:itemIconTint="@drawable/selector"
-            app:menu="@menu/menu"
+            app:itemTextColor="@drawable/selector"
             app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"
 
             />
 

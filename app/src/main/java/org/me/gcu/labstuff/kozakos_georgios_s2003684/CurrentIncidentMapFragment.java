@@ -3,17 +3,13 @@
 package org.me.gcu.labstuff.kozakos_georgios_s2003684;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,17 +22,14 @@ public class CurrentIncidentMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        SupportMapFragment supportMapFragment = (SupportMapFragment)  getChildFragmentManager().findFragmentById(R.id.google_map);
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
-                GoogleMap mMap = googleMap;
+        assert supportMapFragment != null;
+        supportMapFragment.getMapAsync(googleMap -> {
 
-                LatLng place = new LatLng(DetailCurrentIncidentActivity.getLatitude(), DetailCurrentIncidentActivity.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(place).title(String.valueOf(DetailCurrentIncidentActivity.getLatitude()) + " " + String.valueOf(DetailCurrentIncidentActivity.getLongitude())));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15f));
-            }
+            LatLng place = new LatLng(DetailCurrentIncidentActivity.getLatitude(), DetailCurrentIncidentActivity.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(place).title(DetailCurrentIncidentActivity.getLatitude() + " " + DetailCurrentIncidentActivity.getLongitude()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15f));
         });
 
         return view;

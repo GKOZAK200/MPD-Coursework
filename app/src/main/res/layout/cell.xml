@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
+<?xml version="1.0" encoding="utf-8"?><!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="#e6ecf5">
+    android:background="#e6ecf5"
+    android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/titleName"
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:id="@+id/titleName"
+        android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:text="Title"
-        android:textSize="18dp"
-        android:layout_marginLeft="10dp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/startDateView"

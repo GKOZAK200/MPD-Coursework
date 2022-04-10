@@ -1,10 +1,10 @@
 <!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <!--  MPD XML Starter code Semester B Session 2020 2021  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
     tools:context=".MainActivity">
 
@@ -16,14 +16,13 @@
 
 
         <SearchView
+            android:id="@+id/plannedRoadworkSearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/plannedRoadworkSearchView"
             android:iconifiedByDefault="false"
-            android:queryHint="Road or Date (dd month yyyy)"/>
+            android:queryHint="Road or Date (dd month yyyy)" />
 
         <TextView
-            android:id="@+id/acknowledgement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contains Traffic Scotland Data - S2003684"
@@ -33,26 +32,26 @@
         <ListView
             android:id="@+id/plannedRoadworksList"
             android:layout_width="fill_parent"
-            android:layout_height="486dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:scrollingCache="true"
-            android:smoothScrollbar="true" >
+            android:smoothScrollbar="true">
 
         </ListView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottom_nav"
             app:itemBackground="@color/black"
-            app:itemTextColor="@drawable/selector"
             app:itemIconTint="@drawable/selector"
-            app:menu="@menu/menu"
+            app:itemTextColor="@drawable/selector"
             app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"
 
             />
 

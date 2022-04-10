@@ -1,53 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
+<?xml version="1.0" encoding="utf-8"?><!--  Name: Georgios Kozakos   Matric Number: S2003684  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/titleName"
         android:layout_width="match_parent"
         android:layout_height="83dp"
-        android:paddingLeft="20dp"
+        android:background="#e6ecf5"
         android:gravity="center_vertical"
+        android:paddingLeft="20dp"
         android:text="Title"
-        android:textSize="20dp"
-        android:background="#e6ecf5"/>
+        android:textSize="20sp" />
 
     <FrameLayout
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:id="@+id/mapView"/>
+        android:layout_height="400dp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/descriptionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
         android:text="Description: goes here Description goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes hereDescription goes here"
-        android:paddingLeft="10dp"
-        android:textSize="15dp"/>
+        android:textSize="15sp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/pubDateView"
-        android:text="Publish date: here"
-        android:textStyle="italic"
-        android:paddingLeft="10dp"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/acknowledgement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Contains Traffic Scotland Data - S2003684"
         android:paddingLeft="10dp"
+        android:text="Publish date: here"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="Contains Traffic Scotland Data - S2003684"
         android:textSize="12sp" />
-
-
-
 
 
 </LinearLayout>
