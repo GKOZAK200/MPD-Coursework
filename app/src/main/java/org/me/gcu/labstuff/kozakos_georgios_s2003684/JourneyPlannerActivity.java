@@ -682,7 +682,7 @@ public class JourneyPlannerActivity extends AppCompatActivity implements OnClick
             Toast.makeText(JourneyPlannerActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
             BackgroundProcessThread thread = new BackgroundProcessThread();
             thread.start();
-            mHandler.postDelayed(this, 10000);
+            mHandler.postDelayed(this, 180000);
         }
     };
 }

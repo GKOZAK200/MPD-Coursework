@@ -502,7 +502,7 @@ public class RoadworksActivity extends AppCompatActivity implements OnClickListe
             Toast.makeText(RoadworksActivity.this, "Updating list", Toast.LENGTH_SHORT).show();
             RoadworksActivity.BackgroundProcessThread thread = new RoadworksActivity.BackgroundProcessThread();
             thread.start();
-            mHandler.postDelayed(this, 10000);
+            mHandler.postDelayed(this, 180000);
         }
     };
 }
